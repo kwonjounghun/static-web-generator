@@ -1,7 +1,7 @@
 {
   "name": "static-web-generator",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,5 +12,8 @@
     "@eslint/js": "^9.8.0",
     "eslint": "^9.8.0",
     "globals": "^15.9.0"
+  },
+  "dependencies": {
+    "jest": "^29.7.0"
   }
 }
