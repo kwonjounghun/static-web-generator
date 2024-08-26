@@ -1,3 +1,7 @@
-import createPage from './src/builder/createPage.mjs';
+import { createPageContent, generatHtml, readPagesDir } from './src/builder/createPage.mjs';
 
-createPage();
+const pageList = readPagesDir();
+pageList.forEach(async pageDir => {
+    const [filename, pageContent] = await createPageContent(pageDir);
+    generatHtml(filename, pageContent);
+});
