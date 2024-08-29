@@ -1,0 +1,59 @@
+---
+title: "Git-Flow 작업 방식과 Rebase, Merge 이해하기"
+date: "2024-08-26"
+slug: "git-flow"
+---
+
+# Git-Flow 작업 방식과 Rebase, Merge 이해하기
+
+## 목차
+1. [Git-Flow란 무엇인가?](#git-flow란-무엇인가)
+2. [Git-Flow의 브랜치 구조](#git-flow의-브랜치-구조)
+   - [메인 브랜치(Main Branches)](#메인-브랜치main-branches)
+   - [지원 브랜치(Supporting Branches)](#지원-브랜치supporting-branches)
+3. [Rebase와 Merge의 차이점](#rebase와-merge의-차이점)
+   - [Rebase란?](#rebase란)
+   - [Merge란?](#merge란)
+4. [Git-Flow에서 Rebase와 Merge 사용하기](#git-flow에서-rebase와-merge-사용하기)
+5. [결론](#결론)
+
+## Git-Flow란 무엇인가?
+**Git-Flow**는 Git을 사용하는 프로젝트에서 협업과 릴리스를 관리하기 위한 브랜치 전략입니다. Vincent Driessen이 제안한 이 모델은 기능 개발, 버그 수정, 릴리스 준비 등의 다양한 작업을 브랜치로 관리함으로써 프로젝트의 일관성을 유지하고 팀 간 협업을 원활하게 합니다.
+
+## Git-Flow의 브랜치 구조
+
+### 메인 브랜치(Main Branches)
+1. **`main` 브랜치**:
+   - 항상 배포 가능한 상태를 유지해야 하며, 제품의 안정적인 버전을 나타냅니다.
+   - 릴리스가 완료되면 이 브랜치로 병합됩니다.
+
+2. **`develop` 브랜치**:
+   - 새로운 기능을 개발하는 기본 브랜치로, 다음 릴리스 버전을 준비하는 브랜치입니다.
+   - 기능 브랜치가 완료되면 이곳에 병합됩니다.
+
+### 지원 브랜치(Supporting Branches)
+1. **기능 브랜치 (Feature Branches)**:
+   - 새 기능을 개발하기 위해 `develop` 브랜치에서 분기됩니다.
+   - 완료되면 `develop` 브랜치로 병합됩니다.
+   - 브랜치 이름 예시: `feature/login-page`
+
+2. **릴리스 브랜치 (Release Branches)**:
+   - 릴리스 준비를 위한 브랜치로, 버그 수정과 최종적인 QA를 위해 사용됩니다.
+   - 완료되면 `main` 브랜치로 병합되고, `develop` 브랜치에도 병합됩니다.
+   - 브랜치 이름 예시: `release/1.0.0`
+
+3. **핫픽스 브랜치 (Hotfix Branches)**:
+   - 긴급 버그 수정을 위한 브랜치로, `main` 브랜치에서 분기하여 문제를 해결합니다.
+   - 완료되면 `main`과 `develop` 브랜치로 병합됩니다.
+   - 브랜치 이름 예시: `hotfix/urgent-fix`
+
+## Rebase와 Merge의 차이점
+
+### Rebase란?
+**Rebase**는 하나의 브랜치에서 다른 브랜치로 변경 사항을 병합할 때, 새로운 기반으로 병합 이력을 재작성하는 방식입니다. Rebase는 깔끔한 이력을 유지하고, 직선적인 커밋 히스토리를 만듭니다.
+
+- 사용 예시:
+  ```bash
+  git checkout feature-branch
+  git rebase develop
+  ```
