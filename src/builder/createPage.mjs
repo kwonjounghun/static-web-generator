@@ -35,9 +35,9 @@ export async function generatHtml(filename, pageContent) {
     fs.writeFileSync(path.join(process.cwd(), '/public', `${name}.html`), reformatContent);
 }
 
-export async function createPageContent(pageDir) {
+export async function createPageContent(pageDir, props) {
     const page = await import(path.join(process.cwd(), '/src/pages', pageDir));
-    const content = page.default();
+    const content = page.default(props);
 
     return [pageDir, content];
 }
