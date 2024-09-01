@@ -24,22 +24,26 @@ export function readPagesDir() {
     return dir;
 }
 
-export async function generatHtml(filename, pageContent) {
+export async function generatHtml(fileInfo, pageContent) {
     if (!fs.existsSync(path.join(process.cwd(), '/public'))) {
         fs.mkdirSync(path.join(process.cwd(), '/public'));
     }
 
-    const name = path.basename(filename, '.mjs')
+    const name = path.basename(fileInfo.fileName, '.mjs')
     const reformatContent = await prettier.format(template(pageContent), { parser: 'html' });
 
-    fs.writeFileSync(path.join(process.cwd(), '/public', `${name}.html`), reformatContent);
+    if (fileInfo.path && !fs.existsSync(path.join(process.cwd(), `/public/${fileInfo.path}`))) {
+        fs.mkdirSync(path.join(process.cwd(), `/public/${fileInfo.path}`));
+    }
+
+    fs.writeFileSync(path.join(process.cwd(), '/public', `${`/${fileInfo.path}`}/${name}.html`), reformatContent);
 }
 
 export async function createPageContent(pageDir, props) {
     const page = await import(path.join(process.cwd(), '/src/pages', pageDir));
     const content = page.default(props);
 
-    return [pageDir, content];
+    return content;
 }
 
 
