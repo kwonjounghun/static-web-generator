@@ -3,7 +3,7 @@ import fileParser from './parser/fileParser.mjs';
 import blogConfig from '../../blog.config.mjs';
 
 
-async function initallize() {
+async function initialize() {
     const { siteMetadata } = blogConfig
     const allFile = fileParser('/src/pages');
     const allMdx = await mdxParser('/posts');
@@ -17,4 +17,4 @@ async function initallize() {
     return data;
 }
 
-export default initallize;
+export default initialize;

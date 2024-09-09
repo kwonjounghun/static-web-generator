@@ -9,7 +9,7 @@ import rehypeStringify from 'rehype-stringify';
 
 
 // MDX AST에서 헤더 정보만 분리하는 로직
-function separationMataData(markdownAst) {
+function separationMetaData(markdownAst) {
     return markdownAst
         .children
         .splice(1, 1)[0]
@@ -31,21 +31,22 @@ async function mdxParser(dir) {
     for (const mdx of needVisit) {
         const parentPath = mdx.parentPath || '';
         const subDirPath = `${parentPath}/${mdx.fileInfo.name}`;
+        const targetDir = path.join(process.cwd(), `${dir}/${subDirPath}`);
 
         if (mdx.fileInfo.isDirectory()) {
             const subDir = fs
-                .readdirSync(path.join(process.cwd(), `${dir}/${subDirPath}`), { withFileTypes: true })
+                .readdirSync(targetDir, { withFileTypes: true })
                 .map(fileInfo => ({ parentPath: subDirPath, fileInfo }));
 
             needVisit.push(...subDir);
         } else {
-            const content = fs.readFileSync(path.join(process.cwd(), `${dir}/${subDirPath}`));
+            const content = fs.readFileSync(targetDir);
             const processor = await unified()
                 .use(remarkParse)  // Markdown 파싱
                 .use(remarkMdx);   // MDX 구문 파싱
 
             const markdownAst = processor.parse(content);
-            const metaData = separationMataData(markdownAst)
+            const metaData = separationMetaData(markdownAst)
 
             const transformHTML = await unified()
                 .use(remarkRehype)   // Markdown AST를 HTML AST로 변환

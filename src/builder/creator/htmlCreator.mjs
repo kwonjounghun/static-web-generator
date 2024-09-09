@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'node:path';
 import prettier from 'prettier';
-import publicDirCreater from './publicDirCreater.mjs';
+import publicDirCreator from './publicDirCreator.mjs';
 
 const template = (children) => `
 <!DOCTYPE html>
@@ -17,8 +17,8 @@ const template = (children) => `
 </html>
 `;
 
-async function htmlCreater(fileInfo, pageContent) {
-    publicDirCreater();
+async function htmlCreator(fileInfo, pageContent) {
+    publicDirCreator();
 
     const name = fileInfo.name;
     const reformatContent = await prettier.format(template(pageContent), { parser: 'html' });
@@ -30,4 +30,4 @@ async function htmlCreater(fileInfo, pageContent) {
     fs.writeFileSync(path.join(process.cwd(), '/public', `${`/${fileInfo.absolutePath}`}/${fileInfo.metaData ? fileInfo.metaData.slug : name}.html`), reformatContent);
 }
 
-export default htmlCreater;
+export default htmlCreator;
