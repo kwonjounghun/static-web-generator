@@ -82,7 +82,7 @@ function bundle(graph, entryPath) {
             const exports = {};
             moduleCache[moduleName] = exports;
 
-            modules[moduleName](exports, require);
+            modules[moduleName](modules, exports, require);
             return moduleCache[moduleName];
         };
 
