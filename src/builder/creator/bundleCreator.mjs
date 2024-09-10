@@ -26,7 +26,7 @@ function transformModuleContent(content, modulePaths) {
     modulePaths.forEach((modulePath) => {
         const moduleName = path.basename(modulePath, '.js');
         const regex = new RegExp(`import\\s+([\\s\\S]+?)\\s+from\\s+['"\`].*${moduleName}.*['"\`]`, 'g');
-        transformedContent = transformedContent.replace(regex, `const $1 = require('${modulePath}')`);
+        transformedContent = transformedContent.replace(regex, `const $1 = require('${modulePath}').default`);
     });
 
     transformedContent = transformedContent.replace(/export\s+default\s+/g, 'exports.default = ');
