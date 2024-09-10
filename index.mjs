@@ -1,14 +1,16 @@
 import fs from 'fs';
 import path from 'node:path';
 
-import initialize from './src/builder/initialize.mjs';
+import Initialize from './src/builder/initialize.mjs';
 import publicDirCreator from './src/builder/creator/publicDirCreator.mjs';
 import pageComponentToHtmlString from './src/builder/creator/pageComponentToHtmlString.mjs';
 import htmlCreator from './src/builder/creator/htmlCreator.mjs';
 
 
 // 블로그를 구성하는 데이터를 수집 및 객체 생성
-const DB = await initialize();
+const initializeData = new Initialize();
+await initializeData.init();
+const DB = initializeData.getData();
 
 // public 디렉토리를 생성
 publicDirCreator();

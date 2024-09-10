@@ -3,18 +3,31 @@ import fileParser from './parser/fileParser.mjs';
 import blogConfig from '../../blog.config.mjs';
 
 
-async function initialize() {
-    const { siteMetadata } = blogConfig
-    const allFile = fileParser('/src/pages');
-    const allMdx = await mdxParser('/posts');
+class Initialize {
+    static instance;
+    constructor() {
+        if (!Initialize.instance) {
+            Initialize.instance = this;
+        }
 
-    const data = {
-        siteMetadata,
-        allMdx,
-        allFile,
-    };
+        return Initialize.instance;
+    }
 
-    return data;
+    async init() {
+        const siteMetadata = blogConfig.siteMetadata;
+        const allFile = fileParser('/src/pages');
+        const allMdx = await mdxParser('/posts');
+
+        this.data = {
+            siteMetadata,
+            allMdx,
+            allFile,
+        };
+    }
+
+    getData() {
+        return this.data;
+    }
 }
 
-export default initialize;
+export default Initialize;
