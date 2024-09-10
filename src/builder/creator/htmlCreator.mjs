@@ -14,6 +14,7 @@ const template = (children) => `
     <body>
         ${children}
     </body>
+    <script defer src="/js/bundle.js"></script>
 </html>
 `;
 
