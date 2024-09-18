@@ -86,7 +86,7 @@ function bundle(graph, entryPath) {
             return moduleCache[moduleName];
         };
 
-        require('${entryPath.replace(`${process.cwd()}/`, '')}');
+        require('${entryPath.replace(`${process.cwd()}/`, '')}').default();
     })({${modules}});
     `;
 
