@@ -12,7 +12,9 @@ const template = (children) => `
         <title>Document</title>
     </head>
     <body>
-        ${children}
+        <div class="root">
+            ${children}
+        </div>
     </body>
     <script defer src="/js/bundle.js"></script>
 </html>
