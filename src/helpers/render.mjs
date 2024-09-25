@@ -4,7 +4,7 @@ const render = (component) => {
 
         main.innerHTML = '';
         main.appendChild(component);
-    })
+    });
 }
 
 export default render;
