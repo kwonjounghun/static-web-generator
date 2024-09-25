@@ -1,0 +1,125 @@
+---
+title: "class component"
+date: "2024-09-12"
+slug: "class-component"
+---
+
+React의 **Class Components**는 리액트 컴포넌트를 정의하는 전통적인 방법 중 하나입니다. **Hooks**가 도입되기 전까지는 Class Components를 통해 컴포넌트의 상태(state)와 생명주기(lifecycle)를 관리했습니다. Class Components는 ES6의 클래스를 사용하여 정의되며, `React.Component`를 상속받아 사용합니다. 컴포넌트의 상태와 생명주기 메서드를 사용할 수 있다는 점이 주요 특징입니다.
+
+### Class Components 기본 구조
+```jsx
+import React, { Component } from 'react';
+
+class MyComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            count: 0
+        };
+    }
+
+    render() {
+        return <div>카운트: {this.state.count}</div>;
+    }
+}
+```
+여기서 `render()` 메서드는 컴포넌트가 어떻게 화면에 나타날지 정의하며, JSX를 반환합니다.
+
+### 생명주기 메서드(Lifecycle Methods)
+
+생명주기 메서드는 컴포넌트가 DOM에 추가되거나 업데이트될 때, 혹은 제거될 때 특정 작업을 수행할 수 있게 도와줍니다. 주요 생명주기 메서드는 크게 **마운트(Mounting)**, **업데이트(Updating)**, **언마운트(Unmounting)** 단계로 나눌 수 있습니다.
+
+#### 1. **마운트(Mounting)** 단계
+컴포넌트가 처음 생성되고 DOM에 삽입될 때 실행되는 메서드들입니다.
+
+- **`constructor()`**: 
+  컴포넌트가 생성될 때 호출되며, 상태를 초기화하거나 이벤트 핸들러를 바인딩하는 데 사용됩니다.
+  
+- **`componentDidMount()`**: 
+  컴포넌트가 렌더링되고 DOM에 마운트된 후에 호출됩니다. 여기서 API 요청이나 구독과 같은 부수 효과를 처리할 수 있습니다.
+
+#### 2. **업데이트(Updating)** 단계
+컴포넌트의 상태나 props가 변경될 때 실행되는 메서드들입니다.
+
+- **`shouldComponentUpdate(nextProps, nextState)`**:
+  상태나 props가 변경될 때 컴포넌트가 다시 렌더링되어야 하는지 결정하는 메서드입니다. 기본적으로는 `true`를 반환하여 모든 업데이트에서 렌더링을 허용하지만, 성능 최적화를 위해 `false`를 반환해 렌더링을 방지할 수 있습니다.
+
+- **`componentDidUpdate(prevProps, prevState)`**: 
+  컴포넌트가 업데이트된 후에 호출됩니다. 여기서 상태가 변경된 후 수행해야 할 작업을 처리할 수 있습니다. 예를 들어, 새로운 데이터 요청이나 DOM 조작 등이 가능합니다.
+
+#### 3. **언마운트(Unmounting)** 단계
+컴포넌트가 DOM에서 제거될 때 호출됩니다.
+
+- **`componentWillUnmount()`**: 
+  컴포넌트가 DOM에서 제거되기 직전에 호출되며, 구독 해지나 타이머 제거 등 정리 작업을 처리합니다.
+
+### 생명주기 메서드 사용 예시
+
+```jsx
+class MyComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            count: 0
+        };
+    }
+
+    componentDidMount() {
+        console.log('컴포넌트가 마운트되었습니다.');
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return nextState.count !== this.state.count;
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.count !== this.state.count) {
+            console.log('카운트가 업데이트되었습니다.');
+        }
+    }
+
+    componentWillUnmount() {
+        console.log('컴포넌트가 언마운트되었습니다.');
+    }
+
+    render() {
+        return (
+            <div>
+                <p>카운트: {this.state.count}</p>
+                <button onClick={() => this.setState({ count: this.state.count + 1 })}>
+                    증가
+                </button>
+            </div>
+        );
+    }
+}
+```
+
+### Hooks 도입 이후의 변화
+React 16.8에서 **Hooks**가 도입되면서 함수형 컴포넌트에서도 상태와 생명주기를 관리할 수 있게 되었고, 함수형 컴포넌트가 점점 더 많이 사용되고 있습니다. 예를 들어, `useEffect` Hook은 `componentDidMount`, `componentDidUpdate`, `componentWillUnmount`를 하나로 통합하여 사용할 수 있습니다.
+
+```jsx
+import React, { useState, useEffect } from 'react';
+
+function MyFunctionalComponent() {
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+        console.log('컴포넌트가 마운트되었거나 업데이트되었습니다.');
+
+        return () => {
+            console.log('컴포넌트가 언마운트되었습니다.');
+        };
+    }, [count]);
+
+    return (
+        <div>
+            <p>카운트: {count}</p>
+            <button onClick={() => setCount(count + 1)}>증가</button>
+        </div>
+    );
+}
+```
+
+### 결론
+Class Components는 여전히 지원되지만, 새로운 React 개발에서는 **Hooks**를 사용하는 함수형 컴포넌트가 권장되고 있습니다. Hooks를 사용하면 더 짧고 직관적인 코드로 상태와 생명주기 관련 로직을 작성할 수 있습니다. Class Components는 복잡한 로직을 포함한 레거시 코드나 특별한 생명주기 메서드가 필요한 경우에 여전히 유용합니다.
