@@ -2,7 +2,7 @@ import createElement from "../helpers/createElement.mjs";
 import Link from "./Link.mjs";
 
 function Nav(props) {
-    const routePaths = ['/index.html', '/list.html'];
+    const routePaths = ['/', '/list'];
     return createElement(
         'nav',
         null,

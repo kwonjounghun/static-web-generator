@@ -5,9 +5,9 @@ import router from './helpers/clientRouter.mjs';
 
 function App() {
     router({
-        '/index.html': Index,
-        '/list.html': List,
-        '/detail.html': Detail,
+        '/': Index,
+        '/list': List,
+        '/detail': Detail,
     });
 };
 
